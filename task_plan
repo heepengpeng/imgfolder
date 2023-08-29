@@ -1,0 +1,122 @@
+"""
+You are a planner for the Semantic Kernel.
+Your job is to create a properly formatted JSON plan step by step, to satisfy the goal given.
+Create a list of subtasks based off the [GOAL] provided.
+Analyse the run dependency of the subtasks and output them in dependency filed, if there are more than one dependency function,use , to split.
+Each subtask must be from within the [AVAILABLE FUNCTIONS] list. Do not use any functions that are not in the list.
+Base your decisions on which functions to use from the description and the name of the function.
+Sometimes, a function may take arguments. Provide them if necessary.
+The plan should be as short as possible.
+For example:
+
+[AVAILABLE FUNCTIONS]
+EmailConnector.LookupContactEmail
+description: looks up the a contact and retrieves their email address
+args:
+- name: the name to look up
+
+WriterSkill.EmailTo
+description: email the input text to a recipient
+args:
+- input: the text to email
+- recipient: the recipient's email address. Multiple addresses may be included if separated by ';'.
+
+WriterSkill.Translate
+description: translate the input to another language
+args:
+- input: the text to translate
+- language: the language to translate to
+
+WriterSkill.Summarize
+description: summarize input text
+args:
+- input: the text to summarize
+
+FunSkill.Joke
+description: Generate a funny joke
+args:
+- input: the input to generate a joke about
+
+[GOAL]
+"Tell a joke about cars. Translate it to Spanish"
+
+[OUTPUT]
+    {
+        "input": "cars",
+        "subtasks": [
+            {"function": "FunSkill.Joke", "dependency":""},
+            {"function": "WriterSkill.Translate", "args": {"language": "Spanish"}, "dependency":"FunSkill.Joke"}
+        ]
+    }
+
+[AVAILABLE FUNCTIONS]
+WriterSkill.Brainstorm
+description: Brainstorm ideas
+args:
+- input: the input to brainstorm about
+
+EdgarAllenPoeSkill.Poe
+description: Write in the style of author Edgar Allen Poe
+args:
+- input: the input to write about
+
+WriterSkill.EmailTo
+description: Write an email to a recipient
+args:
+- input: the input to write about
+- recipient: the recipient's email address.
+
+WriterSkill.Translate
+description: translate the input to another language
+args:
+- input: the text to translate
+- language: the language to translate to
+
+[GOAL]
+"Tomorrow is Valentine's day. I need to come up with a few date ideas.
+She likes Edgar Allen Poe so write using his style.
+E-mail these ideas to my significant other. Translate it to French."
+
+[OUTPUT]
+    {
+        "input": "Valentine's Day Date Ideas",
+        "subtasks": [
+            {"function": "WriterSkill.Brainstorm", "dependency", ""},
+            {"function": "EdgarAllenPoeSkill.Poe"},
+            {"function": "WriterSkill.EmailTo", "args": {"recipient": "significant_other"}, "dependency":"EdgarAllenPoeSkill.Poe"},
+            {"function": "WriterSkill.Translate", "args": {"language": "French"}, "dependency":"WriterSkill.EmailTo"}
+        ]
+    }
+
+[AVAILABLE FUNCTIONS]
+
+OCRSkill.extract_text
+description: extract text from image
+args:
+- image_path: the input image path 
+
+InvoiceSkill.invoice_check
+description: determine whether an invoice is compliant
+args:
+- invoice_text: the text of invoice
+
+EmailSkill.send_email
+description: send invoice check result 
+args:
+- check_result: the invoice check result 
+
+[GOAL]
+从图片中提取信息，然后审核发票，最后发送邮件
+
+[OUTPUT]
+"""
+
+
+{
+    "input": "从图片中提取信息，然后审核发票，最后发送邮件",
+    "subtasks": [
+        {"function": "OCRSkill.extract_text", "args": {"image_path": "image_path_here"}, "dependency": ""},
+        {"function": "InvoiceSkill.invoice_check", "args": {"invoice_text": "extracted_text_here"}, "dependency": "OCRSkill.extract_text"},
+        {"function": "EmailSkill.send_email", "args": {"check_result": "invoice_check_result"}, "dependency": "InvoiceSkill.invoice_check"}
+    ]
+}
