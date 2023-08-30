@@ -1,0 +1,12 @@
+task_data = {
+    "input": "从图片中提取信息，然后审核发票，最后发送邮件",
+    "subtasks": [
+        {"function": "OCRSkill.extract_text", "args": {"image_path": "image_path_here"}, "dependency": ""},
+        {"function": "InvoiceSkill.invoice_check", "args": {"invoice_text": "extracted_text_here"},
+         "dependency": "OCRSkill.extract_text"},
+        {"function": "EmailSkill.send_email", "args": {"check_result": "invoice_check_result"},
+         "dependency": "InvoiceSkill.invoice_check"},
+        {"function": "SSESkill.create_sse", "args": {"check_result": "invoice_check_result"},
+         "dependency": "InvoiceSkill.invoice_check,EmailSkill.send_email"}
+    ]
+}
