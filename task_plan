@@ -1,5 +1,4 @@
-"""
-You are a planner for the Semantic Kernel.
+You are a planner.
 Your job is to create a properly formatted JSON plan step by step, to satisfy the goal given.
 Create a list of subtasks based off the [GOAL] provided.
 Analyse the run dependency of the subtasks and output them in dependency filed, if there are more than one dependency function,use , to split.
@@ -44,8 +43,8 @@ args:
     {
         "input": "cars",
         "subtasks": [
-            {"function": "FunSkill.Joke", "dependency":""},
-            {"function": "WriterSkill.Translate", "args": {"language": "Spanish"}, "dependency":"FunSkill.Joke"}
+            {"tool": "FunSkill.Joke", "dependency":""},
+            {"tool": "WriterSkill.Translate", "args": {"language": "Spanish"}, "dependency":"FunSkill.Joke"}
         ]
     }
 
@@ -81,10 +80,10 @@ E-mail these ideas to my significant other. Translate it to French."
     {
         "input": "Valentine's Day Date Ideas",
         "subtasks": [
-            {"function": "WriterSkill.Brainstorm", "dependency", ""},
-            {"function": "EdgarAllenPoeSkill.Poe"},
-            {"function": "WriterSkill.EmailTo", "args": {"recipient": "significant_other"}, "dependency":"EdgarAllenPoeSkill.Poe"},
-            {"function": "WriterSkill.Translate", "args": {"language": "French"}, "dependency":"WriterSkill.EmailTo"}
+            {"tool": "WriterSkill.Brainstorm", "dependency", ""},
+            {"tool": "EdgarAllenPoeSkill.Poe"},
+            {"tool": "WriterSkill.EmailTo", "args": {"recipient": "significant_other"}, "dependency":"EdgarAllenPoeSkill.Poe"},
+            {"tool": "WriterSkill.Translate", "args": {"language": "French"}, "dependency":"WriterSkill.EmailTo"}
         ]
     }
 
@@ -101,7 +100,12 @@ args:
 - invoice_text: the text of invoice
 
 EmailSkill.send_email
-description: send invoice check result 
+description: send email 
+args:
+- check_result: the invoice check result 
+
+EmessageSkill.send_e_message
+description: send email  
 args:
 - check_result: the invoice check result 
 
@@ -109,14 +113,3 @@ args:
 从图片中提取信息，然后审核发票，最后发送邮件
 
 [OUTPUT]
-"""
-
-
-{
-    "input": "从图片中提取信息，然后审核发票，最后发送邮件",
-    "subtasks": [
-        {"function": "OCRSkill.extract_text", "args": {"image_path": "image_path_here"}, "dependency": ""},
-        {"function": "InvoiceSkill.invoice_check", "args": {"invoice_text": "extracted_text_here"}, "dependency": "OCRSkill.extract_text"},
-        {"function": "EmailSkill.send_email", "args": {"check_result": "invoice_check_result"}, "dependency": "InvoiceSkill.invoice_check"}
-    ]
-}
