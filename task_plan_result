@@ -7,3 +7,14 @@
         {"function": "EmessageSkill.send_e_message", "args": {"check_result": "compliant"}, "dependency": "InvoiceSkill.invoice_check"}
     ]
 }
+
+
+
+{
+    "input": "Image Information",
+    "subtasks": [
+        {"tool": "ImageProcessingSkill.extract_info"},
+        {"tool": "InvoiceSkill.invoice_check", "dependency": "ImageProcessingSkill.extract_info"},
+        {"tool": "EmailSkill.send_email", "args": {"check_result": "Invoice Check Result"}, "dependency": "InvoiceSkill.invoice_check"}
+    ]
+}
