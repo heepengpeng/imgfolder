@@ -1,20 +1,9 @@
 {
-    "input": "Image with Invoice",
+    "input": "Extract information from image, then send email, followed by invoice check, and finally send email",
     "subtasks": [
-        {"function": "OCRSkill.extract_text", "args": {"image_path": "invoice_image.jpg"}, "dependency": ""},
-        {"function": "InvoiceSkill.invoice_check", "dependency": "OCRSkill.extract_text"},
-        {"function": "EmailSkill.send_email", "args": {"check_result": "compliant"}, "dependency": "InvoiceSkill.invoice_check"},
-        {"function": "EmessageSkill.send_e_message", "args": {"check_result": "compliant"}, "dependency": "InvoiceSkill.invoice_check"}
-    ]
-}
-
-
-
-{
-    "input": "Image Information",
-    "subtasks": [
-        {"tool": "ImageProcessingSkill.extract_info"},
-        {"tool": "InvoiceSkill.invoice_check", "dependency": "ImageProcessingSkill.extract_info"},
-        {"tool": "EmailSkill.send_email", "args": {"check_result": "Invoice Check Result"}, "dependency": "InvoiceSkill.invoice_check"}
+        {"tool": "OCRSkill.extract_text", "args": {"image_path": "image.jpg"}, "dependency": "", "id": "1"},
+        {"tool": "EmailSkill.send_email", "args": {"check_result": "Extracted information"}, "dependency": "1", "id": "2"},
+        {"tool": "InvoiceSkill.invoice_check", "args": {"invoice_text": "Extracted information"}, "dependency": "2", "id": "3"},
+        {"tool": "EmailSkill.send_email", "args": {"check_result": "Invoice check result"}, "dependency": "3", "id": "4"}
     ]
 }
