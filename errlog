@@ -1,0 +1,28 @@
+missing keys:
+['conditioner.embedders.0.transformer.text_model.embeddings.position_ids', 'conditioner.embedders.1.model.attn_mask']
+Traceback (most recent call last):
+  File "/disk1/mindone/hpp/010hppcode/mindone/examples/stable_diffusion_xl/inference/export.py", line 225, in <module>
+    main(args)
+  File "/disk1/mindone/hpp/010hppcode/mindone/examples/stable_diffusion_xl/inference/export.py", line 105, in main
+    model_save_path=model_save_path,
+  File "/disk1/mindone/hpp/010hppcode/mindone/examples/stable_diffusion_xl/inference/export.py", line 27, in model_export
+    ms.export(net, *inputs, file_name=os.path.join(model_save_path, name), file_format="MINDIR")
+  File "/disk1/mindone/miniconda3/envs/ms21_py37_kate/lib/python3.7/site-packages/mindspore/train/serialization.py", line 1449, in export
+    _export(net, file_name, file_format, *inputs, **kwargs)
+  File "/disk1/mindone/miniconda3/envs/ms21_py37_kate/lib/python3.7/site-packages/mindspore/train/serialization.py", line 1505, in _export
+    _save_mindir(net, file_name, *inputs, **kwargs)
+  File "/disk1/mindone/miniconda3/envs/ms21_py37_kate/lib/python3.7/site-packages/mindspore/train/serialization.py", line 1769, in _save_mindir
+    mindir_stream, net_dict = _cell_info(net, incremental, *inputs)
+  File "/disk1/mindone/miniconda3/envs/ms21_py37_kate/lib/python3.7/site-packages/mindspore/train/serialization.py", line 1718, in _cell_info
+    graph_id, _ = _executor.compile(net, *inputs, phase=phase_name, do_convert=False)
+  File "/disk1/mindone/miniconda3/envs/ms21_py37_kate/lib/python3.7/site-packages/mindspore/common/api.py", line 1625, in compile
+    result = self._graph_executor.compile(obj, args, kwargs, phase, self._use_vm_mode())
+TypeError: Do not support to convert <class 'transformers.models.clip.configuration_clip.CLIPTextConfig'> object into graph node..
+For more details, please refer to https://mindspore.cn/docs/zh-CN/master/search.html?q=Do+not+support+to+convert+object+into+graph+node&check_keywords=yes&area=default
+
+----------------------------------------------------
+- The Traceback of Net Construct Code:
+----------------------------------------------------
+
+# In file /disk1/mindone/hpp/010hppcode/mindone/examples/stable_diffusion_xl/gm/modules/embedders/clip/modeling_clip.py:298
+            output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states
